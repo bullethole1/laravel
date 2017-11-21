@@ -6,6 +6,22 @@ Hämta data via cURL från https://www.milletech.se/invoicing/export/customers.
 Ta den tabellstruktur som ni gjort tidigare och skriv in den som migrationer i Laravel.
 Det skall finnas en migration för varje tabell.
 Efter att du har gjort färdigt dina migrationer och testat dem så skriver du ett artisankommando för att importera kunderna.
+
+1. Gör migrationer via php artisan make:migration - en för varje tabell
+2. Gör ett konsollkommando via  php artisan make:command ImportCustomers
+3. Ge kommandot signaturen import:customers
+4. Allting görs i handle-metoden!
+5. Ta curl-koden från den gemensamma övningen. Du behöver inte spara datan i en fil nu.
+6. Gör en Customer-modell via php artisan make:model Customer
+7. Justera modellens inställningar så att id inte är autoinkrementerande och timestamps är avstängt.
+8. Skriv en whitelist via $fillable som innehåller alla fält i tabellen.
+9. Gör hela modell-biten för din adresstabell också.
+10. Loopa igenom datan och sätt in datan i databasen via dina modeller.
+11. Kolla om modellen redan finns via Customer::find($id). Om modellen inte finns så blir det null.
+12. Om modellen inte redan finns gör en ny via $customer = new Customer();
+13. Spara med $customer->save()
+14. Gör samma sak med adresserna!
+
 ## Övning 2
 Nu är det dags att börja exponera den data som du hämtat hem i Laravel.
 Enligt god REST-sed så skall det finnas en route som heter /customers som motsvarar Customer som resurs och modell.
@@ -33,7 +49,7 @@ Skapa en separat tabell för företagen (förslagsvis companies) genom att skriv
 Skriv sedan kod som går igenom datan och plockar ut företagsnamnen.
 Företagsnamnen lagras sedan i den nya separata tabellen och kunder med detta företagsnamn skall få samma company_id.
 ## Övning 7
-Utöka din customers.php så att man kan hämta kunder baserat på company_id.
-Om company_id anges så skall alla kunder med detta id visas.
-Exempel på url: http://wieg16-api.dev/customers?company_id=1
+Lägg till en route där man kan hämta kunder baserat på company_id.
+Alla kunder med detta company_id skall visas.
+Exempel på url: http://wieg16-api.dev/customers/by-company/1
 Denna url skall då visa mig alla kunder med company_id 1 i json-format.
