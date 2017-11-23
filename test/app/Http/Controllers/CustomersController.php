@@ -40,8 +40,8 @@ class CustomersController extends Controller
 
     public function showCustomerCompany($id)
     {
-        $item = Customer::where('company_id', $id)->get();
+        $company = Customer::where('company_id', $id)->get();
 
-        return response()->json($item);
+        return response()->json($company);
     }
 }
