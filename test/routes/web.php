@@ -23,4 +23,4 @@ Route::get('/customers/{id}', 'CustomersController@showSingleCustomer');
 
 Route::get('/customers/{id}/address','CustomersController@showCustomerAddress');
 
-Route::resource('product', 'ProductController');
+Route::resource('products', 'ProductController');

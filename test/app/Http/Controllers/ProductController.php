@@ -15,7 +15,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::all();
+        return View('index', ['products' => $products]);
     }
 
     /**
@@ -25,7 +26,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-
+        return View('create');
     }
 
     /**
@@ -36,18 +37,23 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $product = new Product();
+        $input = $request->all();
+        $product->fill($input)->save();
 
+        return redirect('/');
     }
 
     /**
      * Display the specified resource.
-     *
+     *2
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
     public function show(Product $product)
     {
-        //
+        $products = Product::find($product['entity_id']);
+        return View('show')->with('product', $products);
     }
 
     /**
@@ -58,7 +64,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return View('edit')->with('product', $product);
     }
 
     /**
@@ -70,7 +76,11 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+
+        $input = $request->all();
+        $product->fill($input)->save();
+
+        return redirect('/');
     }
 
     /**
@@ -81,6 +91,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return redirect('/');
     }
 }
