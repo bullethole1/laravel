@@ -59,7 +59,7 @@ class CreateCustomerCompanies extends Command
         $customer_companies = Company::all();
         foreach ($customer_companies as $customer_company) {
             $this->info("Updating customers with company_id: " . $customer_company->id);
-            DB::table('customers')->where('customer_company', '=', $customer_company->company_name)->update(['company_id' => $customer_company->id]);
+            DB::table('customers')->where('customer_company', '=', $customer_company->company_name)             ->update(['company_id' => $customer_company->id]);
         }
     }
 }
