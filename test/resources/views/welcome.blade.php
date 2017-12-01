@@ -63,6 +63,13 @@
                 margin-bottom: 30px;
             }
         </style>
+        <script src="https://sdk.accountkit.com/en_US/sdk.js"></script>
+        <script
+                src="https://code.jquery.com/jquery-3.2.1.min.js"
+                integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+                crossorigin="anonymous">
+
+        </script>
     </head>
     <body>
         <div class="flex-center position-ref full-height">
@@ -78,18 +85,72 @@
             @endif
 
             <div class="content">
+
                 <div class="title m-b-md">
                     Tjabaluba
                 </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+                    <form action="" onsubmit="return false">
+                        <input value="+46" id="country_code" />
+                        <input placeholder="phone number" id="phone_number"/>
+                        <button onclick="smsLogin();">Login via SMS</button>
+                        <div>OR</div>
+                        <input placeholder="email" id="email"/>
+                        <button onclick="emailLogin();">Login via Email</button>
+                    </form>
             </div>
-        </div>
+                <script>
+                    // initialize Account Kit with CSRF protection
+                    AccountKit_OnInteractive = function(){
+                        AccountKit.init(
+                            {
+                                appId:"1716035955124289",
+                                state:"123435",
+                                version:"v1.2",
+                                fbAppEventsEnabled:true,
+                                redirect:"http://laravel.dev/fb-login",
+                                debug: true
+                            }
+                        );
+                    };
+
+                    // login callback
+                    function loginCallback(response) {
+                        if (response.status === "PARTIALLY_AUTHENTICATED") {
+                            var code = response.code;
+                            var csrf = response.state;
+                            $.get('/fb-login?code=' + response.code);
+                        }
+                        else if (response.status === "NOT_AUTHENTICATED") {
+                            // handle authentication failure
+                        }
+                        else if (response.status === "BAD_PARAMS") {
+                            // handle bad parameters
+                        }
+                    }
+
+                    // phone form submission handler
+                    function smsLogin() {
+                        var countryCode = document.getElementById("country_code").value;
+                        var phoneNumber = document.getElementById("phone_number").value;
+                        AccountKit.login(
+                            'PHONE',
+                            {countryCode: countryCode, phoneNumber: phoneNumber}, // will use default values if not specified
+                            loginCallback
+                        );
+                    }
+
+
+                    // email form submission handler
+                    function emailLogin() {
+                        var emailAddress = document.getElementById("email").value;
+                        AccountKit.login(
+                            'EMAIL',
+                            {emailAddress: emailAddress},
+                            loginCallback
+                        );
+                    }
+                </script>
+            </div>
     </body>
 </html>

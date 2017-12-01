@@ -23,4 +23,12 @@ Route::get('/customers/{id}', 'CustomersController@showSingleCustomer');
 
 Route::get('/customers/{id}/address','CustomersController@showCustomerAddress');
 
+Route::get('/fb-login','FacebookController@index');
+
+Route::get('/login','FacebookController@loginForm');
+
+Route::get('/facebook','FacebookController@facebook');
+
 Route::resource('products', 'ProductController');
+
+Route::resource('groups', 'GroupController');
