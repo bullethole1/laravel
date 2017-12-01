@@ -80,7 +80,7 @@ class ProductController extends Controller
         $input = $request->all();
         $product->fill($input)->save();
 
-        return redirect('/');
+        return redirect('products');
     }
 
     /**
@@ -92,6 +92,6 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect('/');
+        return redirect('products');
     }
 }
